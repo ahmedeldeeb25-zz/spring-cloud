@@ -1,0 +1,11 @@
+version: '3'
+services:
+    postgres:
+       image: 'postgres:latest'
+    product_ms:
+        build: .
+        depends_on: 
+          - postgres
+        ports:
+          - '8081:8081'
+          

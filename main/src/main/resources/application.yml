@@ -1,0 +1,31 @@
+eureka:
+  client:
+    enabled: true
+    healthcheck:
+      enabled: true
+    instance-info-replication-interval-seconds: 10
+    registry-fetch-interval-seconds: 10
+    
+ribbon:
+  eureka:
+    enabled: true
+feign:
+  hystrix:
+    enabled: true
+  # client:
+  #     config:
+  #         default:
+  #             connectTimeout: 5000
+  #             readTimeout: 5000
+
+# See https://github.com/Netflix/Hystrix/wiki/Configuration
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          strategy: SEMAPHORE
+          # See https://github.com/spring-cloud/spring-cloud-netflix/issues/1330
+          thread:
+               timeoutInMilliseconds: 60000
+  shareSecurityContext: true

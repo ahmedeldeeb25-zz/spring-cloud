@@ -1,0 +1,68 @@
+version: "3"
+services:
+# SQL DB config
+  postgresql:
+    container_name: postgres
+    image: "postgres:latest"
+    restart: always
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: product
+    volumes:
+       - "pgdata:/var/lib/postgresql/data"
+# Mongo DB Config
+  # mongo:
+  #   image: "mongo:latest"
+# Regsitry_ms Config
+  registry:
+    container_name: registry
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./registry
+    ports:
+      - "8761:8761"
+# gateway_ms Config
+  gateway_ms:
+    container_name: gateway_ms
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - registry
+    environment: 
+     - EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE=http://admin:admin@registry:8761/eureka/
+# main_ms Config
+  main_ms:
+    build:
+      dockerfile: Dockerfile
+      context: ./main
+    # name of it on dockerhub
+    image: ahmedeldeeb/main
+    depends_on:
+      - postgresql
+      - gateway_ms
+    ports:
+      - "8081:8081"
+    environment: 
+     - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/product?usessl=false
+     - EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE=http://admin:admin@registry:8761/eureka/
+
+# # Invoices Config
+#   invoice_ms:
+#     build:
+#       dockerfile: Dockerfile
+#       context: ./Invoice
+#     ports:
+#       - "8082:8082"
+#     depends_on: 
+#       - mongo
+#       - gateway_ms
+
+volumes:
+  pgdata: {}
+  
