@@ -15,6 +15,7 @@ pipeline {
                 sh "mvn -f ./main clean package -DskipTests"
 
                 echo "start of build stage for gateway Microservice"
+                sh "npm --prefix ./gateway/src/main/webapp/ install"
                 sh "mvn -f ./gateway clean package -DskipTests"
             }
         }
