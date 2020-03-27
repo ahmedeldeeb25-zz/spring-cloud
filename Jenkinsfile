@@ -12,10 +12,10 @@ pipeline {
         stage("Build"){
             steps{
                 echo "start of build stage for main Microservice"
-                sh "mvn -f ./main clean package"
+                sh "mvn -f ./main clean package -DskipTests"
 
                 echo "start of build stage for gateway Microservice"
-                sh "mvn -f ./gateway clean package"
+                sh "mvn -f ./gateway clean package -DskipTests"
             }
         }
         stage("Build Docker"){
