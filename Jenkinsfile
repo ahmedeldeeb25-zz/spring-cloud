@@ -17,6 +17,9 @@ pipeline {
                 echo "start of build stage for gateway Microservice"
                 sh "npm --prefix ./gateway/src/main/webapp/ install"
                 sh "mvn -f ./gateway clean package -DskipTests"
+
+                sh "mvn -f ./registry clean package -DskipTests"
+                sh "mvn -f ./user-uaa clean package -DskipTests"
             }
         }
         stage("Build Docker"){
