@@ -31,6 +31,7 @@ pipeline {
 
         stage("Run Docker"){
             steps{
+                sh "docker stop main_ms gateway_ms registry postgres"
                 sh "docker-compose up"
             }
         }

@@ -4,7 +4,7 @@ services:
   postgresql:
     container_name: postgres
     image: "postgres:latest"
-    restart: always
+    #restart: always
     environment:
         POSTGRES_USER: postgres
         POSTGRES_PASSWORD: postgres
@@ -17,7 +17,7 @@ services:
 # Regsitry_ms Config
   registry:
     container_name: registry
-    restart: always
+    #restart: always
     build:
       dockerfile: Dockerfile
       context: ./registry
@@ -26,7 +26,7 @@ services:
 # gateway_ms Config
   gateway_ms:
     container_name: gateway_ms
-    restart: always
+    #restart: always
     build:
       dockerfile: Dockerfile
       context: ./gateway
@@ -38,6 +38,7 @@ services:
      - EUREKA.CLIENT.SERVICE-URL.DEFAULTZONE=http://admin:admin@registry:8761/eureka/
 # main_ms Config
   main_ms:
+    container_name: main_ms
     build:
       dockerfile: Dockerfile
       context: ./main
